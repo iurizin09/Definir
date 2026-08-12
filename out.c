@@ -1,21 +1,19 @@
 #include <stdio.h>
 #include <stdlib.h>
-
 #include <math.h>
 
-// funçao cria matriz 
-
-
+// funçao imprimir a matriz
 void imprimir(int n, double **matriz){
     for (int i = 0; i<n; i++){
         for(int j = 0; j<n;j++){
-            printf("%.2lf ", matriz[i][j]);
+            printf(" %.3lf", matriz[i][j]);
         }
         printf(" \n");
     }
     return ;
 }
 
+// criar matriz 
 double** criar(int n){
     double **matriz;
     matriz=(double**)malloc(n*sizeof(double*));
@@ -24,6 +22,8 @@ double** criar(int n){
     }
     return matriz;
 }
+
+//
 void zeros(int n, double **matriz){
     for (int i = 0; i<n; i++){
         for(int j = 0; j<n;j++){
@@ -46,7 +46,7 @@ void preencher(int n, double** matriz,double h){
 
 int main(void){
 
-    int n=10; 
+    int n=5; 
     int a=0;
     int b=1;
     double h=(double)(b-a)/(double)n;
@@ -67,9 +67,7 @@ int main(void){
     imprimir(n+1,matrizz);        
     printf(" \n");
 
-
-    matrixx(n, mat);
-    imprimir2(n+1,mat);        
+//imprimir(n+1,mat);        
 
 
     return 0 ;
