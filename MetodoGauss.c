@@ -11,30 +11,30 @@ void imprimir(double matriz[linhas][colunas]){
         }
         printf(" \n");
     }
+    printf("\n");
 }
 
-double VericaPivo(double matriz[linhas][colunas],int linha,int coluna)// retorna linha que esta o piov
+int VericaPivo(double matriz[linhas][colunas],int linha,int coluna)// retorna linha que esta o piov
 {
 // retornar linha e coluna do pivo;
-    double pivo = 0;
-    double linhaA = 0;
-    for(linha;linha < linhas;linha++){
+    int pivo = 0;
+    int linhaA = 0;
+
+    for(;linha < linhas;linha++){
        if(fabs(matriz[linha][coluna]) > pivo){
         pivo = fabs(matriz[linha][coluna]);
         linhaA = linha;
        }
 }
+
 return linhaA;
 }
 
 // troca linhas 
 
-void trocaLinhas(double matriz[linhas][colunas],int linha1,int linha2,int coluna)
+void trocaLinha(double matriz[linhas][colunas],int linha1,int linha2,int coluna)
 // como sempre vai ocorrer troca ou nao de linhas, entao nao e preciso passar a coluna, pois a troca e de toda a linha
 {
-    if(matriz[linha1][coluna] == matriz[linha2][coluna]){
-        return ; // se por exemplo a linha 1 e 2 forem iguais, nao precisa trocar
-    }
      double aux;
     for(int j = 0; j < colunas; j++){
        aux = matriz[linha1][j];
@@ -46,19 +46,37 @@ void trocaLinhas(double matriz[linhas][colunas],int linha1,int linha2,int coluna
 
 
 
-void eliminaColuna(double matriz[linhas][colunas],int linha,int coluna,int k,int linha_atual )// linha e coluna do pivo para trocarmoso no segundo termo OU SEJA e o pivo pode ser OUTRO DEPOIS poe exemplo o 
+void eliminaColuna(double matriz[linhas][colunas],int linha,int coluna)// linha e coluna do pivo para trocarmoso no segundo termo OU SEJA e o pivo pode ser OUTRO DEPOIS poe exemplo o 
 {
-   for(int i = 0 ; i < linhas -  k  ; i++){ //  aqui so vai de
-        double termo = matriz[linha_atual+1][coluna] / matriz[linha][coluna]  ;// matriz[2][1] = -4 / 10 matriz [1][0]
-        for (int j = 0; j < colunas ; j++) {
-        double aux = matriz[linha_atual+1][j];  // matriz 
-        if(aux != 0){
-        matriz[linha_atual+1][j] = (-termo)*matriz[linha][coluna] + aux; // deve pegar o termo
+   for(int i = coluna + 1 ; i < linhas; i++){ //  aqui so vai de
+        double termo = matriz[i][coluna] / matriz[linha][coluna]  ;// matriz[2][1] = -4 / 10 matriz [1][0]
+        for (int j = coluna; j < colunas ; j++) {
+            matriz[i][j] = (-termo)*matriz[linha][j] + matriz[i][j]; // deve pegar o termo e
         } 
-        } 
-         linha_atual++;
+    
     }
 }
+
+
+void eliminaColuna2(double matriz[linhas][colunas],int linha,int coluna)//  2  2linha e coluna do pivo para trocarmoso no segundo termo OU SEJA e o pivo pode ser OUTRO DEPOIS poe exemplo o 
+{
+   for(int i = linha - 1; i >=0  ; i--){ //  2
+
+        double termo = matriz[i][coluna] / matriz[linha][coluna]  ;// matriz[2][1] = -4 / 10 matriz [1][0]
+
+        for (int j = coluna; j < colunas ; j++) { //2 2
+            
+            matriz[i][j] = (-termo)*matriz[linha][j] + matriz[i][j]; //
+             
+            
+        } 
+    }
+}
+
+
+
+
+// verificar
 
 int main(void){
 
@@ -68,13 +86,31 @@ double matriz[linhas][colunas] = {
                     {-2,8,-1,-15},
                     {4,-6,5,29}};
 int linha_pivo = 0;
-for(int i = 0 ; i < colunas-2;i++){
+int i ;
+
+for(i= 0; i < colunas-2;i++){
 linha_pivo = VericaPivo(matriz,i,i); // verifica linha do pivo
-trocaLinhas(matriz,linha_pivo,i,i);
-eliminaColuna(matriz,i,i,i+1,i); // essa linha e coluna do pivo pode mudar
-imprimir(matriz);
-printf("\n");
+
+if(matriz[linha_pivo][i] != matriz[i][i]){
+    
+      trocaLinha(matriz,linha_pivo,i,i);// // se por exemplo a linha 1 e 2 forem iguais, nao precisa trocar
+    }
+
+ eliminaColuna(matriz,i,i); // essa linha e coluna do pivo pode mudar
+ imprimir(matriz);
+  
+
 }
+
+
+for(i = linhas - 1 ; i >= 0 ;i--){
+    eliminaColuna2(matriz,i,i); // essa linha e coluna do pivo pode mudar
+    matriz[i][colunas-1] = matriz[i][colunas-1]/matriz[i][i];
+
+}
+
+imprimir(matriz);
+
 
 return 0 ;
 }
